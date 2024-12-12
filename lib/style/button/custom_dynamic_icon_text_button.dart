@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_design_system/style/button/custom_button.dart';
 
-class CustomDynamicTextButton extends StatelessWidget {
-  const CustomDynamicTextButton({
+class CustomDynamicIconTextButton extends StatelessWidget {
+  const CustomDynamicIconTextButton({
     super.key,
     this.boxShadow,
     this.margin = const EdgeInsets.all(0),
@@ -14,6 +14,7 @@ class CustomDynamicTextButton extends StatelessWidget {
     this.splashColor,
     this.highlightColor,
     required this.width,
+    this.maxWidth,
     required this.height,
     required this.radius,
     required this.borderWidth,
@@ -27,8 +28,6 @@ class CustomDynamicTextButton extends StatelessWidget {
   final List<BoxShadow>? boxShadow;
   final EdgeInsetsGeometry margin;
   final EdgeInsetsGeometry padding;
-  final double radius;
-  final double borderWidth;
 
   /// color
   final Color? backgroundColor;
@@ -39,7 +38,10 @@ class CustomDynamicTextButton extends StatelessWidget {
 
   /// size
   final double width;
+  final double? maxWidth;
   final double height;
+  final double radius;
+  final double borderWidth;
 
   /// condition
   final bool isDisable;
@@ -55,52 +57,49 @@ class CustomDynamicTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     double getTextWidth() {
       final TextPainter textPainter = TextPainter(
-        text: TextSpan(
-          text: text,
-          style: textStyle,
-        ),
-        maxLines: 1,
-        textDirection: TextDirection.ltr,
-      )..layout();
-
-      return textPainter.width + padding.horizontal;
+          text: TextSpan(
+            text: text,
+            style: textStyle,
+          ),
+          maxLines: 1,
+          textDirection: TextDirection.ltr)
+        ..layout(maxWidth: maxWidth ?? double.infinity);
+      return textPainter.width;
     }
 
     final textWidth = getTextWidth();
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return CustomButton(
-          /// size
-          width: textWidth,
-          height: height,
+    return CustomButton(
+      /// style
+      boxShadow: boxShadow,
+      margin: margin,
+      padding: padding,
 
-          /// color
-          backgroundColor: backgroundColor,
-          hoverColor: hoverColor,
-          splashColor: splashColor,
-          highlightColor: highlightColor,
+      /// color
+      backgroundColor: backgroundColor,
+      borderColor: borderColor,
+      hoverColor: hoverColor,
+      splashColor: splashColor,
+      highlightColor: highlightColor,
 
-          /// style
-          margin: margin,
-          padding: padding,
-          radius: radius,
-          boxShadow: boxShadow,
-          borderWidth: borderWidth,
-          borderColor: borderColor,
+      /// size
+      width: textWidth,
+      height: height,
+      radius: radius,
+      borderWidth: borderWidth,
 
-          isDisable: isDisable,
-          onTap: onTap,
-          child: Center(
-            child: Text(
-              text,
-              style: textStyle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        );
-      },
+      /// condition
+      isDisable: isDisable,
+
+      onTap: onTap,
+
+      child: Center(
+        child: Text(
+          text,
+          style: textStyle,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
     );
   }
 }

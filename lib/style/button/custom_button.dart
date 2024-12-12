@@ -5,7 +5,7 @@ class CustomButton extends StatelessWidget {
   const CustomButton({
     super.key,
     this.boxShadow,
-    this.margin,
+    this.margin = const EdgeInsets.all(0),
     this.padding = const EdgeInsets.all(0),
     this.backgroundColor,
     this.borderColor,
@@ -23,7 +23,7 @@ class CustomButton extends StatelessWidget {
 
   /// style
   final List<BoxShadow>? boxShadow;
-  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry margin;
   final EdgeInsetsGeometry padding;
 
   /// color
